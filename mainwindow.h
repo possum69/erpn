@@ -18,14 +18,14 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void handleLine(QString line);
-    QObject* findFirstByPostfix(QObject* parent, QString postfix);
+    QObject* findFirstByName(QObject* parent, QString postfix);
     int getValue(QObject* object);
     void setValue(QObject* object, int state);
     void activate(bool);
 
 public slots:
     void run(bool runit=true);
-    void add(QString line);
+    void triggered(QString line);
 
 private:
     Ui::MainWindow *ui;

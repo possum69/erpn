@@ -19,27 +19,27 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->radioButton_record, &QRadioButton::clicked, this, &MainWindow::activate);
 
     // Ops
-    connect(ui->pushButton_plus, &QPushButton::clicked, [main=this] {main->add("+");});
-    connect(ui->pushButton_minus, &QPushButton::clicked, [main=this] {main->add("-");});
-    connect(ui->pushButton_times, &QPushButton::clicked, [main=this] {main->add("*");});
-    connect(ui->pushButton_divide, &QPushButton::clicked, [main=this] {main->add("/");});
-    connect(ui->pushButton_rest, &QPushButton::clicked, [main=this] {main->add("%");});
+    connect(ui->pushButton_plus, &QPushButton::clicked, [main=this] {main->triggered("+");});
+    connect(ui->pushButton_minus, &QPushButton::clicked, [main=this] {main->triggered("-");});
+    connect(ui->pushButton_times, &QPushButton::clicked, [main=this] {main->triggered("*");});
+    connect(ui->pushButton_divide, &QPushButton::clicked, [main=this] {main->triggered("/");});
+    connect(ui->pushButton_rest, &QPushButton::clicked, [main=this] {main->triggered("%");});
 
-    connect(ui->pushButton_or, &QPushButton::clicked, [main=this] {main->add("||");});
-    connect(ui->pushButton_and, &QPushButton::clicked, [main=this] {main->add("&&");});
-    connect(ui->pushButton_not, &QPushButton::clicked, [main=this] {main->add("!");});
-    connect(ui->pushButton_bitewise_and, &QPushButton::clicked, [main=this] {main->add("&");});
-    connect(ui->pushButton_bitwise_or, &QPushButton::clicked, [main=this] {main->add("|");});
-    connect(ui->pushButton_explusive_or, &QPushButton::clicked, [main=this] {main->add("^");});
-    connect(ui->pushButton_sleep, &QPushButton::clicked, [main=this] {main->add("sleep");});
+    connect(ui->pushButton_or, &QPushButton::clicked, [main=this] {main->triggered("||");});
+    connect(ui->pushButton_and, &QPushButton::clicked, [main=this] {main->triggered("&&");});
+    connect(ui->pushButton_not, &QPushButton::clicked, [main=this] {main->triggered("!");});
+    connect(ui->pushButton_bitewise_and, &QPushButton::clicked, [main=this] {main->triggered("&");});
+    connect(ui->pushButton_bitwise_or, &QPushButton::clicked, [main=this] {main->triggered("|");});
+    connect(ui->pushButton_explusive_or, &QPushButton::clicked, [main=this] {main->triggered("^");});
+    connect(ui->pushButton_sleep, &QPushButton::clicked, [main=this] {main->triggered("sleep");});
 
-    connect(ui->pushButton_gt, &QPushButton::clicked, [main=this] {main->add(">");});
-    connect(ui->pushButton_ge, &QPushButton::clicked, [main=this] {main->add(">=");});
-    connect(ui->pushButton_eq, &QPushButton::clicked, [main=this] {main->add("==");});
-    connect(ui->pushButton_le, &QPushButton::clicked, [main=this] {main->add("<=");});
-    connect(ui->pushButton_lt, &QPushButton::clicked, [main=this] {main->add("<");});
-    connect(ui->pushButton_ne, &QPushButton::clicked, [main=this] {main->add("!=");});
-    connect(ui->pushButton_assign, &QPushButton::clicked, [main=this] {main->add("=>");});
+    connect(ui->pushButton_gt, &QPushButton::clicked, [main=this] {main->triggered(">");});
+    connect(ui->pushButton_ge, &QPushButton::clicked, [main=this] {main->triggered(">=");});
+    connect(ui->pushButton_eq, &QPushButton::clicked, [main=this] {main->triggered("==");});
+    connect(ui->pushButton_le, &QPushButton::clicked, [main=this] {main->triggered("<=");});
+    connect(ui->pushButton_lt, &QPushButton::clicked, [main=this] {main->triggered("<");});
+    connect(ui->pushButton_ne, &QPushButton::clicked, [main=this] {main->triggered("!=");});
+    connect(ui->pushButton_assign, &QPushButton::clicked, [main=this] {main->triggered("=>");});
 
     // Test
     connect(ui->pushButton_test, &QPushButton::clicked,this, &MainWindow::run);
@@ -52,34 +52,34 @@ void MainWindow::activate(bool on) {
     if(on && connections.size() == 0) {
         // Recording
         connections.push_front(connect(ui->checkBox_A, &QCheckBox::checkStateChanged, [main=this] {
-            main->add("checkBox_A");
+            main->triggered("checkBox_A");
         }));
         connections.push_front(connect(ui->checkBox_B, &QCheckBox::checkStateChanged, [main=this] {
-            main->add("checkBox_B");
+            main->triggered("checkBox_B");
         }));
         connections.push_front(connect(ui->checkBox_C, &QCheckBox::checkStateChanged, [main=this] {
-            main->add("checkBox_C");
+            main->triggered("checkBox_C");
         }));
         connections.push_front(connect(ui->checkBox_F, &QCheckBox::checkStateChanged, [main=this] {
-            main->add("checkBox_F");
+            main->triggered("checkBox_F");
         }));
         connections.push_front(connect(ui->checkBox_G, &QCheckBox::checkStateChanged, [main=this] {
-            main->add("checkBox_G");
+            main->triggered("checkBox_G");
         }));
         connections.push_front(connect(ui->checkBox_H, &QCheckBox::checkStateChanged, [main=this] {
-            main->add("checkBox_H");
+            main->triggered("checkBox_H");
         }));
         connections.push_front(connect(ui->spinBox_D, &QSpinBox::valueChanged, [main=this] {
-            main->add("spinBox_D");
+            main->triggered("spinBox_D");
         }));
         connections.push_front(connect(ui->spinBox_E, &QSpinBox::valueChanged, [main=this] {
-            main->add("spinBox_E");
+            main->triggered("spinBox_E");
         }));
         connections.push_front(connect(ui->spinBox_I, &QSpinBox::valueChanged, [main=this] {
-            main->add("spinBox_I");
+            main->triggered("spinBox_I");
         }));
         connections.push_front(connect(ui->spinBox_J, &QSpinBox::valueChanged, [main=this] {
-            main->add("spinBox_J");
+            main->triggered("spinBox_J");
         }));
 
     } else {
@@ -120,13 +120,13 @@ void MainWindow::handleLine(QString line) {
         stack.pop_front();
         std::cout << source.toStdString() << line.toStdString() << target.toStdString() << std::endl;
 
-        auto sourceWidget = findFirstByPostfix(ui->centralwidget, source);
+        auto sourceWidget = findFirstByName(ui->centralwidget, source);
         if(sourceWidget != nullptr) {
             state = getValue(sourceWidget);
         } else {
             state = source.toInt();
         }
-        auto targetWidget = findFirstByPostfix(ui->centralwidget, target);
+        auto targetWidget = findFirstByName(ui->centralwidget, target);
         if(targetWidget != nullptr) {
             setValue(targetWidget, state);
         }
@@ -134,7 +134,7 @@ void MainWindow::handleLine(QString line) {
         int state;
         auto source = stack.at(0);
         stack.pop_front();
-        auto sourceWidget = findFirstByPostfix(ui->centralwidget, source);
+        auto sourceWidget = findFirstByName(ui->centralwidget, source);
         if(sourceWidget != nullptr) {
             state = getValue(sourceWidget);
         } else {
@@ -146,7 +146,7 @@ void MainWindow::handleLine(QString line) {
         int state;
         auto source = stack.at(0);
         stack.pop_front();
-        auto sourceWidget = findFirstByPostfix(ui->centralwidget, source);
+        auto sourceWidget = findFirstByName(ui->centralwidget, source);
         if(sourceWidget != nullptr) {
             state = getValue(sourceWidget);
         } else {
@@ -157,7 +157,7 @@ void MainWindow::handleLine(QString line) {
         int state, result;
         auto source = stack.at(0);
         stack.pop_front();
-        auto sourceWidget = findFirstByPostfix(ui->centralwidget, source);
+        auto sourceWidget = findFirstByName(ui->centralwidget, source);
         if(sourceWidget != nullptr) {
             state = getValue(sourceWidget);
         } else {
@@ -166,7 +166,7 @@ void MainWindow::handleLine(QString line) {
         result = state;
         source = stack.at(0);
         stack.pop_front();
-        sourceWidget = findFirstByPostfix(ui->centralwidget, source);
+        sourceWidget = findFirstByName(ui->centralwidget, source);
         if(sourceWidget != nullptr) {
             state = getValue(sourceWidget);
         } else {
@@ -178,7 +178,7 @@ void MainWindow::handleLine(QString line) {
         int state, result;
         auto source = stack.at(0);
         stack.pop_front();
-        auto sourceWidget = findFirstByPostfix(ui->centralwidget, source);
+        auto sourceWidget = findFirstByName(ui->centralwidget, source);
         if(sourceWidget != nullptr) {
             state = getValue(sourceWidget);
         } else {
@@ -187,7 +187,7 @@ void MainWindow::handleLine(QString line) {
         result = state;
         source = stack.at(0);
         stack.pop_front();
-        sourceWidget = findFirstByPostfix(ui->centralwidget, source);
+        sourceWidget = findFirstByName(ui->centralwidget, source);
         if(sourceWidget != nullptr) {
             state = getValue(sourceWidget);
         } else {
@@ -199,7 +199,7 @@ void MainWindow::handleLine(QString line) {
         int state, result;
         auto source = stack.at(0);
         stack.pop_front();
-        auto sourceWidget = findFirstByPostfix(ui->centralwidget, source);
+        auto sourceWidget = findFirstByName(ui->centralwidget, source);
         if(sourceWidget != nullptr) {
             state = getValue(sourceWidget);
         } else {
@@ -208,7 +208,7 @@ void MainWindow::handleLine(QString line) {
         result = state;
         source = stack.at(0);
         stack.pop_front();
-        sourceWidget = findFirstByPostfix(ui->centralwidget, source);
+        sourceWidget = findFirstByName(ui->centralwidget, source);
         if(sourceWidget != nullptr) {
             state = getValue(sourceWidget);
         } else {
@@ -220,7 +220,7 @@ void MainWindow::handleLine(QString line) {
         int state, result;
         auto source = stack.at(0);
         stack.pop_front();
-        auto sourceWidget = findFirstByPostfix(ui->centralwidget, source);
+        auto sourceWidget = findFirstByName(ui->centralwidget, source);
         if(sourceWidget != nullptr) {
             state = getValue(sourceWidget);
         } else {
@@ -229,7 +229,7 @@ void MainWindow::handleLine(QString line) {
         result = state;
         source = stack.at(0);
         stack.pop_front();
-        sourceWidget = findFirstByPostfix(ui->centralwidget, source);
+        sourceWidget = findFirstByName(ui->centralwidget, source);
         if(sourceWidget != nullptr) {
             state = getValue(sourceWidget);
         } else {
@@ -241,7 +241,7 @@ void MainWindow::handleLine(QString line) {
         int state, result;
         auto source = stack.at(0);
         stack.pop_front();
-        auto sourceWidget = findFirstByPostfix(ui->centralwidget, source);
+        auto sourceWidget = findFirstByName(ui->centralwidget, source);
         if(sourceWidget != nullptr) {
             state = getValue(sourceWidget);
         } else {
@@ -250,7 +250,7 @@ void MainWindow::handleLine(QString line) {
         result = state;
         source = stack.at(0);
         stack.pop_front();
-        sourceWidget = findFirstByPostfix(ui->centralwidget, source);
+        sourceWidget = findFirstByName(ui->centralwidget, source);
         if(sourceWidget != nullptr) {
             state = getValue(sourceWidget);
         } else {
@@ -262,7 +262,7 @@ void MainWindow::handleLine(QString line) {
         int state, result;
         auto source = stack.at(0);
         stack.pop_front();
-        auto sourceWidget = findFirstByPostfix(ui->centralwidget, source);
+        auto sourceWidget = findFirstByName(ui->centralwidget, source);
         if(sourceWidget != nullptr) {
             state = getValue(sourceWidget);
         } else {
@@ -271,7 +271,7 @@ void MainWindow::handleLine(QString line) {
         result = state;
         source = stack.at(0);
         stack.pop_front();
-        sourceWidget = findFirstByPostfix(ui->centralwidget, source);
+        sourceWidget = findFirstByName(ui->centralwidget, source);
         if(sourceWidget != nullptr) {
             state = getValue(sourceWidget);
         } else {
@@ -283,7 +283,7 @@ void MainWindow::handleLine(QString line) {
         int state, result;
         auto source = stack.at(0);
         stack.pop_front();
-        auto sourceWidget = findFirstByPostfix(ui->centralwidget, source);
+        auto sourceWidget = findFirstByName(ui->centralwidget, source);
         if(sourceWidget != nullptr) {
             state = getValue(sourceWidget);
         } else {
@@ -292,7 +292,7 @@ void MainWindow::handleLine(QString line) {
         result = state;
         source = stack.at(0);
         stack.pop_front();
-        sourceWidget = findFirstByPostfix(ui->centralwidget, source);
+        sourceWidget = findFirstByName(ui->centralwidget, source);
         if(sourceWidget != nullptr) {
             state = getValue(sourceWidget);
         } else {
@@ -304,7 +304,7 @@ void MainWindow::handleLine(QString line) {
         int state, result;
         auto source = stack.at(0);
         stack.pop_front();
-        auto sourceWidget = findFirstByPostfix(ui->centralwidget, source);
+        auto sourceWidget = findFirstByName(ui->centralwidget, source);
         if(sourceWidget != nullptr) {
             state = getValue(sourceWidget);
         } else {
@@ -313,7 +313,7 @@ void MainWindow::handleLine(QString line) {
         result = state;
         source = stack.at(0);
         stack.pop_front();
-        sourceWidget = findFirstByPostfix(ui->centralwidget, source);
+        sourceWidget = findFirstByName(ui->centralwidget, source);
         if(sourceWidget != nullptr) {
             state = getValue(sourceWidget);
         } else {
@@ -325,7 +325,7 @@ void MainWindow::handleLine(QString line) {
         int state, result;
         auto source = stack.at(0);
         stack.pop_front();
-        auto sourceWidget = findFirstByPostfix(ui->centralwidget, source);
+        auto sourceWidget = findFirstByName(ui->centralwidget, source);
         if(sourceWidget != nullptr) {
             state = getValue(sourceWidget);
         } else {
@@ -334,7 +334,7 @@ void MainWindow::handleLine(QString line) {
         result = state;
         source = stack.at(0);
         stack.pop_front();
-        sourceWidget = findFirstByPostfix(ui->centralwidget, source);
+        sourceWidget = findFirstByName(ui->centralwidget, source);
         if(sourceWidget != nullptr) {
             state = getValue(sourceWidget);
         } else {
@@ -350,7 +350,7 @@ void MainWindow::handleLine(QString line) {
         int state, result;
         auto source = stack.at(0);
         stack.pop_front();
-        auto sourceWidget = findFirstByPostfix(ui->centralwidget, source);
+        auto sourceWidget = findFirstByName(ui->centralwidget, source);
         if(sourceWidget != nullptr) {
             state = getValue(sourceWidget);
         } else {
@@ -359,7 +359,7 @@ void MainWindow::handleLine(QString line) {
         result = state;
         source = stack.at(0);
         stack.pop_front();
-        sourceWidget = findFirstByPostfix(ui->centralwidget, source);
+        sourceWidget = findFirstByName(ui->centralwidget, source);
         if(sourceWidget != nullptr) {
             state = getValue(sourceWidget);
         } else {
@@ -371,6 +371,8 @@ void MainWindow::handleLine(QString line) {
         } else {
             stack.push_front(QString("division by null"));
         }
+    } else if(line.trimmed().size() < 1) {
+        // NOP
     } else {
         stack.push_front(line);
         std::cout << "push " << line.toStdString() << " on stack" << std::endl;
@@ -413,14 +415,14 @@ void MainWindow::setValue(QObject* object, int state) {
     }
 }
 
-QObject* MainWindow::findFirstByPostfix(QObject* parent, QString postfix) {
+QObject *MainWindow::findFirstByName(QObject* parent, QString postfix) {
     for(auto child: parent->children()) {
         auto name = child->objectName();
         //std::cout << parent->objectName().toStdString() << ": " << name.toStdString() << std::endl;
         if(name.compare(postfix) == 0) {
             return child;
         } else {
-            auto found = findFirstByPostfix(child, postfix);
+            auto found = findFirstByName(child, postfix);
             if(found != nullptr) {
                 return found;
             }
@@ -429,11 +431,11 @@ QObject* MainWindow::findFirstByPostfix(QObject* parent, QString postfix) {
     return nullptr;
 }
 
-void MainWindow::add(QString line)
+void MainWindow::triggered(QString line)
 {
     if(ui->radioButton_record->isChecked()) {
         ui->plainTextEdit_rules->appendPlainText(line);
-    } else {
+    } else if(line.contains("Box_")) {
         run();
     }
 }
