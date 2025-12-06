@@ -112,276 +112,406 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::handleLine(QString line) {
-    if(line.startsWith("=>")) {
-        int state;
-        auto target = stack.at(0);
-        stack.pop_front();
-        auto source = stack.at(0);
-        stack.pop_front();
-        std::cout << source.toStdString() << line.toStdString() << target.toStdString() << std::endl;
+    try {
+        if(line.startsWith("=>")) {
+            int state;
+            auto target = stack.at(0);
+            stack.pop_front();
+            auto source = stack.at(0);
+            stack.pop_front();
+            std::cout << source.toStdString() << line.toStdString() << target.toStdString() << std::endl;
 
-        auto sourceWidget = findFirstByName(ui->centralwidget, source);
-        if(sourceWidget != nullptr) {
-            state = getValue(sourceWidget);
-        } else {
-            state = source.toInt();
-        }
-        auto targetWidget = findFirstByName(ui->centralwidget, target);
-        if(targetWidget != nullptr) {
-            setValue(targetWidget, state);
-        }
-    } else if(line.startsWith("!")) {
-        int state;
-        auto source = stack.at(0);
-        stack.pop_front();
-        auto sourceWidget = findFirstByName(ui->centralwidget, source);
-        if(sourceWidget != nullptr) {
-            state = getValue(sourceWidget);
-        } else {
-            state = source.toInt();
-        }
-        state = !state;
-        stack.push_front(QString::number(state));
-    } else if(line.startsWith("sleep")) {
-        int state;
-        auto source = stack.at(0);
-        stack.pop_front();
-        auto sourceWidget = findFirstByName(ui->centralwidget, source);
-        if(sourceWidget != nullptr) {
-            state = getValue(sourceWidget);
-        } else {
-            state = source.toInt();
-        }
-        QThread::msleep(state);
-    } else if(line.startsWith("&&")) {
-        int state, result;
-        auto source = stack.at(0);
-        stack.pop_front();
-        auto sourceWidget = findFirstByName(ui->centralwidget, source);
-        if(sourceWidget != nullptr) {
-            state = getValue(sourceWidget);
-        } else {
-            state = source.toInt();
-        }
-        result = state;
-        source = stack.at(0);
-        stack.pop_front();
-        sourceWidget = findFirstByName(ui->centralwidget, source);
-        if(sourceWidget != nullptr) {
-            state = getValue(sourceWidget);
-        } else {
-            state = source.toInt();
-        }
-        result = result && state;
-        stack.push_front(QString::number(result));
-    } else if(line.startsWith("||")) {
-        int state, result;
-        auto source = stack.at(0);
-        stack.pop_front();
-        auto sourceWidget = findFirstByName(ui->centralwidget, source);
-        if(sourceWidget != nullptr) {
-            state = getValue(sourceWidget);
-        } else {
-            state = source.toInt();
-        }
-        result = state;
-        source = stack.at(0);
-        stack.pop_front();
-        sourceWidget = findFirstByName(ui->centralwidget, source);
-        if(sourceWidget != nullptr) {
-            state = getValue(sourceWidget);
-        } else {
-            state = source.toInt();
-        }
-        result = result || state;
-        stack.push_front(QString::number(result));
-    } else if(line.startsWith("&")) {
-        int state, result;
-        auto source = stack.at(0);
-        stack.pop_front();
-        auto sourceWidget = findFirstByName(ui->centralwidget, source);
-        if(sourceWidget != nullptr) {
-            state = getValue(sourceWidget);
-        } else {
-            state = source.toInt();
-        }
-        result = state;
-        source = stack.at(0);
-        stack.pop_front();
-        sourceWidget = findFirstByName(ui->centralwidget, source);
-        if(sourceWidget != nullptr) {
-            state = getValue(sourceWidget);
-        } else {
-            state = source.toInt();
-        }
-        result = result & state;
-        stack.push_front(QString::number(result));
-    } else if(line.startsWith("|")) {
-        int state, result;
-        auto source = stack.at(0);
-        stack.pop_front();
-        auto sourceWidget = findFirstByName(ui->centralwidget, source);
-        if(sourceWidget != nullptr) {
-            state = getValue(sourceWidget);
-        } else {
-            state = source.toInt();
-        }
-        result = state;
-        source = stack.at(0);
-        stack.pop_front();
-        sourceWidget = findFirstByName(ui->centralwidget, source);
-        if(sourceWidget != nullptr) {
-            state = getValue(sourceWidget);
-        } else {
-            state = source.toInt();
-        }
-        result = result | state;
-        stack.push_front(QString::number(result));
-    } else if(line.startsWith("^")) {
-        int state, result;
-        auto source = stack.at(0);
-        stack.pop_front();
-        auto sourceWidget = findFirstByName(ui->centralwidget, source);
-        if(sourceWidget != nullptr) {
-            state = getValue(sourceWidget);
-        } else {
-            state = source.toInt();
-        }
-        result = state;
-        source = stack.at(0);
-        stack.pop_front();
-        sourceWidget = findFirstByName(ui->centralwidget, source);
-        if(sourceWidget != nullptr) {
-            state = getValue(sourceWidget);
-        } else {
-            state = source.toInt();
-        }
-        result = result ^ state;
-        stack.push_front(QString::number(result));
-    } else if(line.startsWith("+")) {
-        int state, result;
-        auto source = stack.at(0);
-        stack.pop_front();
-        auto sourceWidget = findFirstByName(ui->centralwidget, source);
-        if(sourceWidget != nullptr) {
-            state = getValue(sourceWidget);
-        } else {
-            state = source.toInt();
-        }
-        result = state;
-        source = stack.at(0);
-        stack.pop_front();
-        sourceWidget = findFirstByName(ui->centralwidget, source);
-        if(sourceWidget != nullptr) {
-            state = getValue(sourceWidget);
-        } else {
-            state = source.toInt();
-        }
-        result = result + state;
-        stack.push_front(QString::number(result));
-    } else if(line.startsWith("-")) {
-        int state, result;
-        auto source = stack.at(0);
-        stack.pop_front();
-        auto sourceWidget = findFirstByName(ui->centralwidget, source);
-        if(sourceWidget != nullptr) {
-            state = getValue(sourceWidget);
-        } else {
-            state = source.toInt();
-        }
-        result = state;
-        source = stack.at(0);
-        stack.pop_front();
-        sourceWidget = findFirstByName(ui->centralwidget, source);
-        if(sourceWidget != nullptr) {
-            state = getValue(sourceWidget);
-        } else {
-            state = source.toInt();
-        }
-        result = result - state;
-        stack.push_front(QString::number(result));
-    } else if(line.startsWith("*")) {
-        int state, result;
-        auto source = stack.at(0);
-        stack.pop_front();
-        auto sourceWidget = findFirstByName(ui->centralwidget, source);
-        if(sourceWidget != nullptr) {
-            state = getValue(sourceWidget);
-        } else {
-            state = source.toInt();
-        }
-        result = state;
-        source = stack.at(0);
-        stack.pop_front();
-        sourceWidget = findFirstByName(ui->centralwidget, source);
-        if(sourceWidget != nullptr) {
-            state = getValue(sourceWidget);
-        } else {
-            state = source.toInt();
-        }
-        result = result * state;
-        stack.push_front(QString::number(result));
-    } else if(line.startsWith("/")) {
-        int state, result;
-        auto source = stack.at(0);
-        stack.pop_front();
-        auto sourceWidget = findFirstByName(ui->centralwidget, source);
-        if(sourceWidget != nullptr) {
-            state = getValue(sourceWidget);
-        } else {
-            state = source.toInt();
-        }
-        result = state;
-        source = stack.at(0);
-        stack.pop_front();
-        sourceWidget = findFirstByName(ui->centralwidget, source);
-        if(sourceWidget != nullptr) {
-            state = getValue(sourceWidget);
-        } else {
-            state = source.toInt();
-        }
-        if(state != 0) {
-            result = result / state;
+            auto sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            auto targetWidget = findFirstByName(ui->centralwidget, target);
+            if(targetWidget != nullptr) {
+                setValue(targetWidget, state);
+            }
+        } else if(line.startsWith("sleep")) {
+            int state;
+            auto source = stack.at(0);
+            stack.pop_front();
+            auto sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            QThread::msleep(state);
+        } else if(line.startsWith("&&")) {
+            int state, result;
+            auto source = stack.at(0);
+            stack.pop_front();
+            auto sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            result = state;
+            source = stack.at(0);
+            stack.pop_front();
+            sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            result = result && state;
             stack.push_front(QString::number(result));
-        } else {
-            stack.push_front(QString("division by null"));
-        }
-    } else if(line.startsWith("%")) {
-        int state, result;
-        auto source = stack.at(0);
-        stack.pop_front();
-        auto sourceWidget = findFirstByName(ui->centralwidget, source);
-        if(sourceWidget != nullptr) {
-            state = getValue(sourceWidget);
-        } else {
-            state = source.toInt();
-        }
-        result = state;
-        source = stack.at(0);
-        stack.pop_front();
-        sourceWidget = findFirstByName(ui->centralwidget, source);
-        if(sourceWidget != nullptr) {
-            state = getValue(sourceWidget);
-        } else {
-            state = source.toInt();
-        }
-        if(state != 0) {
-            result = result % state;
+        } else if(line.startsWith("||")) {
+            int state, result;
+            auto source = stack.at(0);
+            stack.pop_front();
+            auto sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            result = state;
+            source = stack.at(0);
+            stack.pop_front();
+            sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            result = result || state;
             stack.push_front(QString::number(result));
+        } else if(line.startsWith(">=")) {
+            int state, result;
+            auto source = stack.at(0);
+            stack.pop_front();
+            auto sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            result = state;
+            source = stack.at(0);
+            stack.pop_front();
+            sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            result = result >= state;
+            stack.push_front(QString::number(result));
+        } else if(line.startsWith("==")) {
+            int state, result;
+            auto source = stack.at(0);
+            stack.pop_front();
+            auto sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            result = state;
+            source = stack.at(0);
+            stack.pop_front();
+            sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            result = result == state;
+            stack.push_front(QString::number(result));
+        } else if(line.startsWith("<=")) {
+            int state, result;
+            auto source = stack.at(0);
+            stack.pop_front();
+            auto sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            result = state;
+            source = stack.at(0);
+            stack.pop_front();
+            sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            result = result <= state;
+            stack.push_front(QString::number(result));
+        } else if(line.startsWith("!=")) {
+            int state, result;
+            auto source = stack.at(0);
+            stack.pop_front();
+            auto sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            result = state;
+            source = stack.at(0);
+            stack.pop_front();
+            sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            result = result != state;
+            stack.push_front(QString::number(result));
+        } else if(line.startsWith("&")) {
+            int state, result;
+            auto source = stack.at(0);
+            stack.pop_front();
+            auto sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            result = state;
+            source = stack.at(0);
+            stack.pop_front();
+            sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            result = result & state;
+            stack.push_front(QString::number(result));
+        } else if(line.startsWith("|")) {
+            int state, result;
+            auto source = stack.at(0);
+            stack.pop_front();
+            auto sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            result = state;
+            source = stack.at(0);
+            stack.pop_front();
+            sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            result = result | state;
+            stack.push_front(QString::number(result));
+        } else if(line.startsWith("^")) {
+            int state, result;
+            auto source = stack.at(0);
+            stack.pop_front();
+            auto sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            result = state;
+            source = stack.at(0);
+            stack.pop_front();
+            sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            result = result ^ state;
+            stack.push_front(QString::number(result));
+        } else if(line.startsWith("+")) {
+            int state, result;
+            auto source = stack.at(0);
+            stack.pop_front();
+            auto sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            result = state;
+            source = stack.at(0);
+            stack.pop_front();
+            sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            result = result + state;
+            stack.push_front(QString::number(result));
+        } else if(line.startsWith("-")) {
+            int state, result;
+            auto source = stack.at(0);
+            stack.pop_front();
+            auto sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            result = state;
+            source = stack.at(0);
+            stack.pop_front();
+            sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            result = result - state;
+            stack.push_front(QString::number(result));
+        } else if(line.startsWith("*")) {
+            int state, result;
+            auto source = stack.at(0);
+            stack.pop_front();
+            auto sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            result = state;
+            source = stack.at(0);
+            stack.pop_front();
+            sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            result = result * state;
+            stack.push_front(QString::number(result));
+        } else if(line.startsWith("/")) {
+            int state, result;
+            auto source = stack.at(0);
+            stack.pop_front();
+            auto sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            result = state;
+            source = stack.at(0);
+            stack.pop_front();
+            sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            if(state != 0) {
+                result = result / state;
+                stack.push_front(QString::number(result));
+            } else {
+                stack.push_front(QString("division by null"));
+            }
+        } else if(line.startsWith("%")) {
+            int state, result;
+            auto source = stack.at(0);
+            stack.pop_front();
+            auto sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            result = state;
+            source = stack.at(0);
+            stack.pop_front();
+            sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            if(state != 0) {
+                result = result % state;
+                stack.push_front(QString::number(result));
+            } else {
+                stack.push_front(QString("division by null"));
+            }
+        } else if(line.startsWith("<")) {
+            int state, result;
+            auto source = stack.at(0);
+            stack.pop_front();
+            auto sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            result = state;
+            source = stack.at(0);
+            stack.pop_front();
+            sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            result = result < state;
+            stack.push_front(QString::number(result));
+        } else if(line.startsWith(">")) {
+            int state, result;
+            auto source = stack.at(0);
+            stack.pop_front();
+            auto sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            result = state;
+            source = stack.at(0);
+            stack.pop_front();
+            sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            result = result > state;
+            stack.push_front(QString::number(result));
+        } else if(line.startsWith("!")) {
+            int state;
+            auto source = stack.at(0);
+            stack.pop_front();
+            auto sourceWidget = findFirstByName(ui->centralwidget, source);
+            if(sourceWidget != nullptr) {
+                state = getValue(sourceWidget);
+            } else {
+                state = source.toInt();
+            }
+            state = !state;
+            stack.push_front(QString::number(state));
+        } else if(line.trimmed().size() < 1) {
+            // NOP
         } else {
-            stack.push_front(QString("division by null"));
+            stack.push_front(line);
+            std::cout << "push " << line.toStdString() << " on stack" << std::endl;
+            return;
         }
-    } else if(line.trimmed().size() < 1) {
-        // NOP
-    } else {
-        stack.push_front(line);
-        std::cout << "push " << line.toStdString() << " on stack" << std::endl;
-        return;
-    }
-    if(stack.empty()) {
-        std::cout << "stack is empty!" << std::endl;
-    } else {
-        std::cout << "first on stack: " << stack.at(0).toStdString() << std::endl;
+        if(stack.empty()) {
+            std::cout << "stack is empty!" << std::endl;
+        } else {
+            std::cout << "first on stack: " << stack.at(0).toStdString() << std::endl;
+        }
+    } catch (...) {
+        std::cerr << "error in rule" << std::endl;
     }
 }
 
